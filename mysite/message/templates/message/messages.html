@@ -1,0 +1,51 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Messaging</title>
+    </head>
+
+    <body>
+        <h1>Messaging</h1>
+
+        <form action = '/logout/' method = 'POST'>
+            {% csrf_token %}
+            <input type = 'submit' value = 'Logout'>
+        </form>
+
+        <h2>Messages with {{other}}</h2>
+        <ul>
+            {% for message in messages %}
+            <li>From: {{message.sender}}</li>
+            <li>To: {{message.receiver}}</li>
+            <li>Time: {{message.date_sent}}</li>
+                <ul>
+                    <li>{{message.text}}</li>
+                </ul>
+                {% if message.sender.username == current_user.username %}
+                    <form action = '/deleteMessage/{{message.id}}' method = 'POST'>
+                        {% csrf_token %}
+                        <input type="hidden" name="other" value="{{other}}">
+                        <button name = "del" type = "submit">Delete Message</button>
+                    </form>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <h2>Send a Message</h2>
+        <form action = '/sendMessage/' method = 'POST'>
+            {% csrf_token %}
+            <li><label for = "sender">Sender</label>
+            <input type="text" name="sender" value="{{current_user.username}}"/></li>
+            <li><label for = "receiver">Receiver</label>
+            <input type="text" name="receiver" value="{{other}}"/></li>
+            <li><label for = "message">Message</label>
+            <input type = 'text' name = 'message'/><br><br></li>
+            <input type = "submit" value = 'Send Message'/>
+        </form>
+        <h2>Go Back</h2>
+        <form action = '/' method = 'POST'>
+            {% csrf_token %}
+            <input type = 'submit' value = 'Back'>
+        </form>
+    </body>
+</html>

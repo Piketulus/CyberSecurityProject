@@ -1,0 +1,36 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Messaging</title>
+    </head>
+
+    <body>
+        <h1>Messaging</h1>
+
+        <form action = 'logout/' method = 'POST'>
+            {% csrf_token %}
+            <input type = 'submit' value = 'Logout'>
+        </form>
+
+        <h2>Users to Message</h2>
+        <ul>
+            {% for user in users %}
+            <li>{{user.username}}</li>
+            <form action = 'messages/{{user.username}}' method = 'POST'>
+                {% csrf_token %}
+                <input type = "submit" value = "Message"/>
+            </form>
+            {% endfor %}
+        </ul>
+        <!--
+        Fix to flaw 4: Don't show all users
+
+        <h2>Type in user to message:</h2>
+        <form action = 'messages/' method = 'POST'>
+            {% csrf_token %}
+            <input type = "text" name = "other"/>
+            <input type = "submit" value = "Message"/>
+        </form>
+        -->
+    </body>
+</html>
